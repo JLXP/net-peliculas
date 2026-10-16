@@ -13,6 +13,25 @@ namespace PeliculasAPI.Controllers
             var generos = repositorio.ObtenerTodosLosGeneros();
             return generos;
         }
+
+
+        [HttpPost]
+        public void Post()
+        {
+            
+        }
+
+        [HttpPut]
+        public void Put()
+        {
+            
+        }
+
+        [HttpDelete]
+        public void Delete()
+        {
+            
+        }
     }
 }
 
