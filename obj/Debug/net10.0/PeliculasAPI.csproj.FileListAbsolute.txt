@@ -34,3 +34,4 @@
 /Users/javierleonardo/Desktop/CURSOS/DOTNET/PeliculasAPI/bin/Debug/net10.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/javierleonardo/Desktop/CURSOS/DOTNET/PeliculasAPI/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/javierleonardo/Desktop/CURSOS/DOTNET/PeliculasAPI/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/Users/javierleonardo/Desktop/CURSOS/DOTNET/PeliculasAPI/obj/Debug/net10.0/PeliculasAPI.sourcelink.json
