@@ -14,23 +14,33 @@ namespace PeliculasAPI.Controllers
             return generos;
         }
 
+        [HttpGet]
+        public Genero? Get(int id)
+        {
+            var repositorio = new RepositorioEnMemoria();
+            var genero = repositorio.ObtenerPorId(id);
+            return genero;
+        }
+
+
+
 
         [HttpPost]
         public void Post()
         {
-            
+
         }
 
         [HttpPut]
         public void Put()
         {
-            
+
         }
 
         [HttpDelete]
         public void Delete()
         {
-            
+
         }
     }
 }

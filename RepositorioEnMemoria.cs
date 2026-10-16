@@ -19,4 +19,10 @@ public class RepositorioEnMemoria
         return _generos;
     }
 
+
+    public Genero? ObtenerPorId(int id)
+    {
+        return _generos.FirstOrDefault(g => g.Id == id);
+    }
+
 }
