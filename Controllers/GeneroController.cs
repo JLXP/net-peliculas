@@ -4,7 +4,7 @@ using PeliculasAPI.Entidades;
 namespace PeliculasAPI.Controllers
 {
     [Route("api/[controller]")]
-    public class GeneroController
+    public class GeneroController: ControllerBase
     {
         [HttpGet()] // api/generos
         [HttpGet("listado")]
@@ -17,10 +17,16 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{id:int}/{nombre?}")]// api/generos/500
-        public Genero? Get(int id, string nombre = "Roberto")
+        public ActionResult<Genero> Get(int id, string nombre = "Roberto")
         {
             var repositorio = new RepositorioEnMemoria();
             var genero = repositorio.ObtenerPorId(id);
+
+            if(genero is null)
+            {
+                return NotFound();
+            }
+
             return genero;
         }
 
