@@ -6,7 +6,9 @@ namespace PeliculasAPI.Controllers
     [Route("api/[controller]")]
     public class GeneroController
     {
-        [HttpGet]
+        [HttpGet()] // api/generos
+        [HttpGet("listado")]
+        [HttpGet("/listado-generos")]
         public List<Genero> Get()
         {
             var repositorio = new RepositorioEnMemoria();
@@ -14,15 +16,21 @@ namespace PeliculasAPI.Controllers
             return generos;
         }
 
-        [HttpGet]
-        public Genero? Get(int id)
+        [HttpGet("{id:int}/{nombre?}")]// api/generos/500
+        public Genero? Get(int id, string nombre = "Roberto")
         {
             var repositorio = new RepositorioEnMemoria();
             var genero = repositorio.ObtenerPorId(id);
             return genero;
         }
 
-
+         [HttpGet("{nombre}")]// api/generos/500
+        public Genero? Get(string nombre = "Roberto")
+        {
+            var repositorio = new RepositorioEnMemoria();
+            var genero = repositorio.ObtenerPorId(1);
+            return genero;
+        }
 
 
         [HttpPost]
