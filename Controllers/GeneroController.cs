@@ -9,9 +9,9 @@ namespace PeliculasAPI.Controllers
     public class GeneroController: ControllerBase
     {
 
-        private readonly RepositorioEnMemoria repositorio;
+        private readonly IRepositorio repositorio;
         
-        public GeneroController(RepositorioEnMemoria repositorio)
+        public GeneroController(IRepositorio repositorio)
         {
             this.repositorio = repositorio;
         }

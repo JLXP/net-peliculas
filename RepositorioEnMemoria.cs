@@ -2,7 +2,7 @@ using PeliculasAPI.Entidades;
 
 namespace PeliculasAPI;
 
-public class RepositorioEnMemoria
+public class RepositorioEnMemoria: IRepositorio
 {
     private List<Genero> _generos;
     public RepositorioEnMemoria()
