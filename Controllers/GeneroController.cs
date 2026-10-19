@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using PeliculasAPI.Entidades;
 
 namespace PeliculasAPI.Controllers
@@ -16,8 +17,9 @@ namespace PeliculasAPI.Controllers
             return generos;
         }
 
-        [HttpGet("{id:int}/{nombre?}")]// api/generos/500
-        public async Task<ActionResult<Genero>> Get(int id, string nombre = "Roberto")
+        [HttpGet("{id:int}")]// api/generos/500
+        [OutputCache]
+        public async Task<ActionResult<Genero>> Get(int id)
         {
             var repositorio = new RepositorioEnMemoria();
             var genero = await repositorio.ObtenerPorId(id);
