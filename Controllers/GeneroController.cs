@@ -10,6 +10,7 @@ namespace PeliculasAPI.Controllers
         [HttpGet()] // api/generos
         [HttpGet("listado")]
         [HttpGet("/listado-generos")]
+        [OutputCache]
         public List<Genero> Get()
         {
             var repositorio = new RepositorioEnMemoria();
@@ -41,8 +42,8 @@ namespace PeliculasAPI.Controllers
         }
 
 
-        [HttpPost]
-        public void Post()
+        [HttpPost("{id:int}")]
+        public void Post(int id, [FromBody] Genero genero, [FromQuery] string apellido)
         {
 
         }
