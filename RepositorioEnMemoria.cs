@@ -26,4 +26,9 @@ public class RepositorioEnMemoria
         return _generos.FirstOrDefault(g => g.Id == id);
     }
 
+    public bool Existe(string nombre)
+    {
+        return _generos.Any(g=>g.Nombre == nombre);
+    }
+
 }

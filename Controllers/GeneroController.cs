@@ -44,9 +44,17 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpPost()]
-        public void Post( [FromBody] Genero genero)
+        public IActionResult Post( [FromBody] Genero genero)
         {
+            var repositorio = new RepositorioEnMemoria();
+            var yaExisteUnGeneroConDichoNombre = repositorio.Existe(genero.Nombre);
 
+            if (yaExisteUnGeneroConDichoNombre)
+            {
+                return BadRequest($"Ya existe un genero con el nombre {genero.Nombre}");
+            }
+
+            return Ok();
         }
 
         [HttpPut]
