@@ -17,10 +17,10 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{id:int}/{nombre?}")]// api/generos/500
-        public ActionResult<Genero> Get(int id, string nombre = "Roberto")
+        public async Task<ActionResult<Genero>> Get(int id, string nombre = "Roberto")
         {
             var repositorio = new RepositorioEnMemoria();
-            var genero = repositorio.ObtenerPorId(id);
+            var genero = await repositorio.ObtenerPorId(id);
 
             if(genero is null)
             {
@@ -31,10 +31,10 @@ namespace PeliculasAPI.Controllers
         }
 
          [HttpGet("{nombre}")]// api/generos/500
-        public Genero? Get(string nombre = "Roberto")
+        public async Task<ActionResult<Genero?>> Get(string nombre = "Roberto")
         {
             var repositorio = new RepositorioEnMemoria();
-            var genero = repositorio.ObtenerPorId(1);
+            var genero = await repositorio.ObtenerPorId(1);
             return genero;
         }
 

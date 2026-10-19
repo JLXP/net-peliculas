@@ -20,8 +20,9 @@ public class RepositorioEnMemoria
     }
 
 
-    public Genero? ObtenerPorId(int id)
+    public async Task<Genero?> ObtenerPorId(int id)
     {
+        await Task.Delay(TimeSpan.FromSeconds(3));
         return _generos.FirstOrDefault(g => g.Id == id);
     }
 
