@@ -16,9 +16,11 @@ namespace PeliculasAPI.Controllers
         private readonly ServicioScoped scoped1;
         private readonly ServicioScoped scoped2;
         private readonly ServicioSingleton singleton1;
+        private readonly IOutputCacheStore outputCacheStore;
+        private const string cacheTag = "generos";
 
         
-        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1)
+        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1, IOutputCacheStore outputCacheStore)
         {
             this.repositorio = repositorio;
             this.transient1 = transient1;
@@ -26,6 +28,7 @@ namespace PeliculasAPI.Controllers
             this.scoped1 = scoped1;
             this.scoped2 = scoped2;
             this.singleton1 = singleton1;
+            this.outputCacheStore = outputCacheStore;
         }
 
         [HttpGet("servicios-tiempo-de-vida")]
@@ -43,7 +46,7 @@ namespace PeliculasAPI.Controllers
         [HttpGet()] // api/generos
         [HttpGet("listado")]
         [HttpGet("/listado-generos")]
-        [OutputCache]
+        [OutputCache(Tags = [cacheTag])]
         public List<Genero> Get()
         {
             var generos = repositorio.ObtenerTodosLosGeneros();
@@ -51,7 +54,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{id:int}")]// api/generos/500
-        [OutputCache]
+        [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genero>> Get(int id)
         {
             var repositorio = new RepositorioEnMemoria();
@@ -74,7 +77,7 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpPost()]
-        public IActionResult Post( [FromBody] Genero genero)
+        public async Task<IActionResult> Post( [FromBody] Genero genero)
         {
             var yaExisteUnGeneroConDichoNombre = repositorio.Existe(genero.Nombre);
 
@@ -84,6 +87,7 @@ namespace PeliculasAPI.Controllers
             }
 
             repositorio.Crear(genero);
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
 
             return Ok();
         }
