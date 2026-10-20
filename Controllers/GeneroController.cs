@@ -83,6 +83,8 @@ namespace PeliculasAPI.Controllers
                 return BadRequest($"Ya existe un genero con el nombre {genero.Nombre}");
             }
 
+            repositorio.Crear(genero);
+
             return Ok();
         }
 

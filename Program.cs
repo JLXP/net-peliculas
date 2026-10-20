@@ -15,7 +15,7 @@ builder.Services.AddOutputCache(opciones=>
     opciones.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(15);
 });
 
-builder.Services.AddTransient<IRepositorio, RepositorioEnMemoria>();
+builder.Services.AddSingleton<IRepositorio, RepositorioEnMemoria>();
 builder.Services.AddTransient<ServicioTransient>();
 builder.Services.AddScoped<ServicioScoped>();
 builder.Services.AddSingleton<ServicioSingleton>();
