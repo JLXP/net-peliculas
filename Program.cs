@@ -16,6 +16,9 @@ builder.Services.AddOutputCache(opciones=>
 });
 
 builder.Services.AddTransient<IRepositorio, RepositorioEnMemoria>();
+builder.Services.AddTransient<ServicioTransient>();
+builder.Services.AddScoped<ServicioScoped>();
+builder.Services.AddSingleton<ServicioSingleton>();
 
 var app = builder.Build();
 

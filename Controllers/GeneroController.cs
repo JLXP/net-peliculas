@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using PeliculasAPI.Entidades;
@@ -10,11 +11,34 @@ namespace PeliculasAPI.Controllers
     {
 
         private readonly IRepositorio repositorio;
+        private readonly ServicioTransient transient1;
+        private readonly ServicioTransient transient2;
+        private readonly ServicioScoped scoped1;
+        private readonly ServicioScoped scoped2;
+        private readonly ServicioSingleton singleton1;
+
         
-        public GeneroController(IRepositorio repositorio)
+        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1)
         {
             this.repositorio = repositorio;
+            this.transient1 = transient1;
+            this.transient2 = transient2;
+            this.scoped1 = scoped1;
+            this.scoped2 = scoped2;
+            this.singleton1 = singleton1;
         }
+
+        [HttpGet("servicios-tiempo-de-vida")]
+        public IActionResult GetServicioTiempoDeVida()
+        {
+            return Ok(new
+            {
+                Transients = new {transient1 = transient1.ObtenerId, transient2.ObtenerId },
+                Scopeds= new {scoped1 = scoped1.ObtenerId, scoped2 = scoped2.ObtenerId},
+                Singleton = singleton1.ObtenerId
+            });
+        }
+
 
         [HttpGet()] // api/generos
         [HttpGet("listado")]
