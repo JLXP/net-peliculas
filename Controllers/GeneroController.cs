@@ -17,10 +17,11 @@ namespace PeliculasAPI.Controllers
         private readonly ServicioScoped scoped2;
         private readonly ServicioSingleton singleton1;
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly IConfiguration configuration;
         private const string cacheTag = "generos";
 
         
-        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1, IOutputCacheStore outputCacheStore)
+        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1, IOutputCacheStore outputCacheStore, IConfiguration configuration)
         {
             this.repositorio = repositorio;
             this.transient1 = transient1;
@@ -29,6 +30,13 @@ namespace PeliculasAPI.Controllers
             this.scoped2 = scoped2;
             this.singleton1 = singleton1;
             this.outputCacheStore = outputCacheStore;
+            this.configuration = configuration;
+        }
+
+        [HttpGet("ejemplo-proveedor-configuracion")]
+        public string GetEjemploProveedorConfiguracion()
+        {
+            return configuration.GetValue<string>("CadenaDeConexion")!;
         }
 
         [HttpGet("servicios-tiempo-de-vida")]
