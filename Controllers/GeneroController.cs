@@ -7,109 +7,48 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GeneroController: ControllerBase
+    public class GeneroController : ControllerBase
     {
-
-        private readonly IRepositorio repositorio;
-        private readonly ServicioTransient transient1;
-        private readonly ServicioTransient transient2;
-        private readonly ServicioScoped scoped1;
-        private readonly ServicioScoped scoped2;
-        private readonly ServicioSingleton singleton1;
         private readonly IOutputCacheStore outputCacheStore;
-        private readonly IConfiguration configuration;
         private const string cacheTag = "generos";
 
-        
-        public GeneroController(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1, IOutputCacheStore outputCacheStore, IConfiguration configuration)
+        public GeneroController(IOutputCacheStore outputCacheStore)
         {
-            this.repositorio = repositorio;
-            this.transient1 = transient1;
-            this.transient2 = transient2;
-            this.scoped1 = scoped1;
-            this.scoped2 = scoped2;
-            this.singleton1 = singleton1;
+
             this.outputCacheStore = outputCacheStore;
-            this.configuration = configuration;
         }
-
-        [HttpGet("ejemplo-proveedor-configuracion")]
-        public string GetEjemploProveedorConfiguracion()
-        {
-            return configuration.GetValue<string>("CadenaDeConexion")!;
-        }
-
-        [HttpGet("servicios-tiempo-de-vida")]
-        public IActionResult GetServicioTiempoDeVida()
-        {
-            return Ok(new
-            {
-                Transients = new {transient1 = transient1.ObtenerId, transient2.ObtenerId },
-                Scopeds= new {scoped1 = scoped1.ObtenerId, scoped2 = scoped2.ObtenerId},
-                Singleton = singleton1.ObtenerId
-            });
-        }
-
 
         [HttpGet()] // api/generos
-        [HttpGet("listado")]
-        [HttpGet("/listado-generos")]
         [OutputCache(Tags = [cacheTag])]
         public List<Genero> Get()
         {
-            var generos = repositorio.ObtenerTodosLosGeneros();
-            return generos;
+            return new List<Genero>() { new Genero { Id = 1, Nombre = "Comedia" }, new Genero { Id = 2, Nombre = "Accion" } };
         }
 
         [HttpGet("{id:int}")]// api/generos/500
         [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genero>> Get(int id)
         {
-            var repositorio = new RepositorioEnMemoria();
-            var genero = await repositorio.ObtenerPorId(id);
-
-            if(genero is null)
-            {
-                return NotFound();
-            }
-
-            return genero;
+            throw new NotImplementedException();
         }
-
-         [HttpGet("{nombre}")]// api/generos/500
-        public async Task<ActionResult<Genero?>> Get(string nombre = "Roberto")
-        {
-            var genero = await repositorio.ObtenerPorId(1);
-            return genero;
-        }
-
 
         [HttpPost()]
-        public async Task<IActionResult> Post( [FromBody] Genero genero)
+        public async Task<IActionResult> Post([FromBody] Genero genero)
         {
-            var yaExisteUnGeneroConDichoNombre = repositorio.Existe(genero.Nombre);
 
-            if (yaExisteUnGeneroConDichoNombre)
-            {
-                return BadRequest($"Ya existe un genero con el nombre {genero.Nombre}");
-            }
-
-            repositorio.Crear(genero);
-            await outputCacheStore.EvictByTagAsync(cacheTag, default);
-
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPut]
         public void Put()
         {
-
+            throw new NotImplementedException();
         }
 
         [HttpDelete]
         public void Delete()
         {
-
+            throw new NotImplementedException();
         }
     }
 }
