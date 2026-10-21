@@ -15,6 +15,16 @@ builder.Services.AddOutputCache(opciones=>
     opciones.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(15);
 });
 
+var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermitidos")!.Split(",");
+
+builder.Services.AddCors(opciones =>
+{
+    opciones.AddDefaultPolicy(opcionesCORS =>
+    {
+        opcionesCORS.WithOrigins(origenesPermitidos).AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 builder.Services.AddSingleton<IRepositorio, RepositorioEnMemoria>();
 builder.Services.AddTransient<ServicioTransient>();
 builder.Services.AddScoped<ServicioScoped>();
@@ -30,6 +40,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseOutputCache();
 
