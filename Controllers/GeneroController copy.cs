@@ -18,7 +18,7 @@ namespace PeliculasAPI.Controllers
         private readonly IOutputCacheStore outputCacheStore;
         private readonly IConfiguration configuration;
         private const string cacheTag = "generos";
-
+        //comments
         
         public GeneroControllerCopy(IRepositorio repositorio, ServicioTransient transient1, ServicioTransient transient2, ServicioScoped scoped1,ServicioScoped scoped2, ServicioSingleton singleton1, IOutputCacheStore outputCacheStore, IConfiguration configuration)
         {
