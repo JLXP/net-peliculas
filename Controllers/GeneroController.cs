@@ -10,6 +10,7 @@ namespace PeliculasAPI.Controllers
     public class GeneroController : ControllerBase
     {
         private readonly IOutputCacheStore outputCacheStore;
+        private readonly ApplicationDbContext context;
         private const string cacheTag = "generos";
 
         public GeneroController(IOutputCacheStore outputCacheStore)
@@ -25,7 +26,7 @@ namespace PeliculasAPI.Controllers
             return new List<Genero>() { new Genero { Id = 1, Nombre = "Comedia" }, new Genero { Id = 2, Nombre = "Accion" } };
         }
 
-        [HttpGet("{id:int}")]// api/generos/500
+        [HttpGet("{id:int}", Name = "ObtenerGeneroPorId")]// api/generos/500
         [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<Genero>> Get(int id)
         {
@@ -36,7 +37,9 @@ namespace PeliculasAPI.Controllers
         public async Task<IActionResult> Post([FromBody] Genero genero)
         {
 
-            throw new NotImplementedException();
+            context.Add(genero);
+            await context.SaveChangesAsync();
+            return CreatedAtRoute("ObtenerGeneroPorId", new { id = genero.Id }, genero);
         }
 
         [HttpPut]
