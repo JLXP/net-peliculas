@@ -1,7 +1,9 @@
 using System.Reflection.Metadata;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.DTOs;
 using PeliculasAPI.Entidades;
 
@@ -26,9 +28,9 @@ namespace PeliculasAPI.Controllers
 
         [HttpGet()] // api/generos
         [OutputCache(Tags = [cacheTag])]
-        public List<GeneroDTO> Get()
+        public async Task<List<GeneroDTO>> Get()
         {
-            return new List<GeneroDTO>() { new GeneroDTO { Id = 1, Nombre = "Comedia" }, new GeneroDTO { Id = 2, Nombre = "Accion" } };
+            return await context.Generos.ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGeneroPorId")]// api/generos/500
