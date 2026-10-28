@@ -33,7 +33,10 @@ namespace PeliculasAPI.Controllers
         {
             var queryable = context.Generos;
             await HttpContext.InsertarParametrosPaginacionEnCabecera(queryable);
-            return await queryable.Paginar(paginacion).ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
+            return await queryable
+                .OrderBy(g=>g.Nombre)
+                .Paginar(paginacion)
+                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGeneroPorId")]// api/generos/500
