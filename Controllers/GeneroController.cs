@@ -86,11 +86,20 @@ namespace PeliculasAPI.Controllers
             return NoContent();
 
         }
-
-        [HttpDelete]
-        public void Delete()
+        
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            var registrosBorrados = await context.Generos.Where(g=>g.Id == id).ExecuteDeleteAsync();
+
+            if(registrosBorrados == 0)
+            {
+                return NotFound();
+            }
+
+            //Limpiar cache
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            return NoContent();
         }
     }
 }
