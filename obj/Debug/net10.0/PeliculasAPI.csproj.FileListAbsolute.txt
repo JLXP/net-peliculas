@@ -336,5 +336,4 @@ C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\D
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\Debug\net10.0\PeliculasAPI.pdb
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\Debug\net10.0\PeliculasAPI.genruntimeconfig.cache
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\Debug\net10.0\ref\PeliculasAPI.dll
-C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\AutoMapper.dll
