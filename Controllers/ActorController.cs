@@ -104,5 +104,19 @@ namespace PeliculasAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var registrosBorrados = await context.Actores.Where(a => a.Id == id).ExecuteDeleteAsync();
+
+            if(registrosBorrados == 0)
+            {
+                return NotFound();
+            }
+
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            return NoContent();
+        }
     }
 }
