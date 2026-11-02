@@ -17,6 +17,7 @@ namespace PeliculasAPI.Utilidades
         {
             CreateMap<ActorCreacionDTO, Actor>()
                 .ForMember(x => x.Foto, options => options.Ignore());
+            CreateMap<Actor, ActorDTO>();
 
         }
 
