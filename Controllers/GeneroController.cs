@@ -12,18 +12,18 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GeneroController : ControllerBase
+    public class GeneroController : CustomBaseController
     {
         private readonly IOutputCacheStore outputCacheStore;
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private const string cacheTag = "generos";
 
-        public GeneroController(IOutputCacheStore outputCacheStore, ApplicationDbContext dbContext, IMapper mapper)
+        public GeneroController(IOutputCacheStore outputCacheStore, ApplicationDbContext context, IMapper mapper) :base(context, mapper)
         {
 
             this.outputCacheStore = outputCacheStore;
-            this.context = dbContext;
+            this.context = context;
             this.mapper = mapper;
         }
 
@@ -31,12 +31,7 @@ namespace PeliculasAPI.Controllers
         [OutputCache(Tags = [cacheTag])]
         public async Task<List<GeneroDTO>> Get([FromQuery] PaginacionDTO paginacion)       
         {
-            var queryable = context.Generos;
-            await HttpContext.InsertarParametrosPaginacionEnCabecera(queryable);
-            return await queryable
-                .OrderBy(g=>g.Nombre)
-                .Paginar(paginacion)
-                .ProjectTo<GeneroDTO>(mapper.ConfigurationProvider).ToListAsync();
+            return await Get<Genero, GeneroDTO>(paginacion, ordenarPor: g => g.Nombre);
         }
 
         [HttpGet("{id:int}", Name = "ObtenerGeneroPorId")]// api/generos/500
