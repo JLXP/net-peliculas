@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using PeliculasAPI;
 
 #nullable disable
@@ -45,6 +46,28 @@ namespace PeliculasAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actores");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.Cine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<Point>("Ubicacion")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cines");
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.Genero", b =>
