@@ -45,15 +45,7 @@ namespace PeliculasAPI.Controllers
         [OutputCache(Tags = [cacheTag])]
         public async Task<ActionResult<ActorDTO>> Get(int id)
         {
-            var actor = await context.Actores
-                .ProjectTo<ActorDTO>(mapper.ConfigurationProvider).FirstOrDefaultAsync(a => a.Id == id);
-
-            if(actor is null)
-            {
-                return NotFound();
-            }
-
-            return actor;
+            return await Get<Actor, ActorDTO>(id);
         }
 
         [HttpPost]
