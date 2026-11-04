@@ -87,6 +87,152 @@ namespace PeliculasAPI.Migrations
 
                     b.ToTable("Generos");
                 });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.Pelicula", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaLanzamiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Poster")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Trailer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Peliculas");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaActor", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Personaje")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("ActorId", "PeliculaId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculasActores");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaCine", b =>
+                {
+                    b.Property<int>("CineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CineId", "PeliculaId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculasCines");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaGenero", b =>
+                {
+                    b.Property<int>("GeneroId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PeliculaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GeneroId", "PeliculaId");
+
+                    b.HasIndex("PeliculaId");
+
+                    b.ToTable("PeliculasGeneros");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaActor", b =>
+                {
+                    b.HasOne("PeliculasAPI.Entidades.Actor", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeliculasAPI.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculasActores")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaCine", b =>
+                {
+                    b.HasOne("PeliculasAPI.Entidades.Cine", "Cine")
+                        .WithMany()
+                        .HasForeignKey("CineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeliculasAPI.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculasCines")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cine");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaGenero", b =>
+                {
+                    b.HasOne("PeliculasAPI.Entidades.Genero", "Genero")
+                        .WithMany()
+                        .HasForeignKey("GeneroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeliculasAPI.Entidades.Pelicula", "Pelicula")
+                        .WithMany("PeliculasGeneros")
+                        .HasForeignKey("PeliculaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
+
+                    b.Navigation("Pelicula");
+                });
+
+            modelBuilder.Entity("PeliculasAPI.Entidades.Pelicula", b =>
+                {
+                    b.Navigation("PeliculasActores");
+
+                    b.Navigation("PeliculasCines");
+
+                    b.Navigation("PeliculasGeneros");
+                });
 #pragma warning restore 612, 618
         }
     }

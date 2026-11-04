@@ -22,7 +22,7 @@ namespace PeliculasAPI.Utilidades
                 .ForMember(x => x.Longitud, cine => cine.MapFrom(p => p.Ubicacion.X));
 
             CreateMap<CineCreacionDTO, Cine>()
-                .ForMember(x=>x.Ubicacion,  cineDTO => cineDTO.MapFrom(p=>geometryFactory.CreatePoint(new Coordinate(p.Longitud, p.Latitud))
+                .ForMember(x => x.Ubicacion, cineDTO => cineDTO.MapFrom(p => geometryFactory.CreatePoint(new Coordinate(p.Longitud, p.Latitud))));
         }
 
         private void ConfigurarMapeoActores()
