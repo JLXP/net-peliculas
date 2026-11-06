@@ -46,6 +46,8 @@ namespace PeliculasAPI.Utilidades
                 .ForMember(x => x.Foto, options => options.Ignore());
             CreateMap<Actor, ActorDTO>();
 
+            CreateMap<Actor, PeliculaActorDTO>();
+
         }
 
         private void ConfigurarMapeoGeneros()
