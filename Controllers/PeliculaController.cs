@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.DTOs;
+using PeliculasAPI.Entidades;
 using PeliculasAPI.Services;
 
 namespace PeliculasAPI.Controllers
@@ -17,6 +18,7 @@ namespace PeliculasAPI.Controllers
         private readonly IMapper mapper;
         private readonly IOutputCacheStore outputCacheStore;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
+        private readonly string contenedor = "peliculas";
 
         public PeliculaController(ApplicationDbContext context, IMapper mapper, IOutputCacheStore outputCacheStore, IAlmacenadorArchivos almacenadorArchivos): base(context, mapper, outputCacheStore, cacheTag)
         {
@@ -83,7 +85,35 @@ namespace PeliculasAPI.Controllers
             };
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromForm] PeliculaCreacionDTO peliculaCreacionDTO)
+        {
+            var pelicula = mapper.Map<Pelicula>(peliculaCreacionDTO);
+            
+            if(peliculaCreacionDTO.Poster is not null)
+            {
+                var url = await almacenadorArchivos.Almacenar(contenedor, peliculaCreacionDTO.Poster);
+                pelicula.Poster = url;
+            }
 
+            AsignarOrdenActores(pelicula);
+            context.Add(pelicula);
+            await context.SaveChangesAsync();
+            await outputCacheStore.EvictByTagAsync(cacheTag, default);
+            var peliculaDTO = mapper.Map<PeliculaDTO>(pelicula);
+            return CreatedAtRoute("ObtenerPeliculaPorId", new {id = pelicula.Id}, peliculaDTO);
+
+        }
+
+        private void AsignarOrdenActores(Pelicula pelicula)
+        {
+            if (pelicula.PeliculasActores is not null)
+            {
+                for(int i = 0; i<pelicula.PeliculasActores.Count; i++)
+                {
+                    pelicula.PeliculasActores[i].Orden = i;                }
+            }
+        }
 
 
     }
