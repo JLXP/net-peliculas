@@ -342,3 +342,6 @@ C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\D
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\NetTopologySuite.dll
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\NetTopologySuite.IO.SqlServerBytes.dll
 C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\obj\Debug\net10.0\EFCoreSqlServerNetTopologySuite.cs
+C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\javie\OneDrive\Desktop\PROJECTS\PELICULAS-NET-REACT\net-peliculas\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
