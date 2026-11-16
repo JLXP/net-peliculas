@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/peliculas")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PeliculaController: CustomBaseController
     {
         private const string cacheTag = "peliculas";
@@ -19,19 +22,22 @@ namespace PeliculasAPI.Controllers
         private readonly IMapper mapper;
         private readonly IOutputCacheStore outputCacheStore;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
+        private readonly IServicioUsuarios servicioUsuarios;
         private readonly string contenedor = "peliculas";
 
-        public PeliculaController(ApplicationDbContext context, IMapper mapper, IOutputCacheStore outputCacheStore, IAlmacenadorArchivos almacenadorArchivos): base(context, mapper, outputCacheStore, cacheTag)
+        public PeliculaController(ApplicationDbContext context, IMapper mapper, IOutputCacheStore outputCacheStore, IAlmacenadorArchivos almacenadorArchivos, IServicioUsuarios servicioUsuarios): base(context, mapper, outputCacheStore, cacheTag)
         {
             this.context = context;
             this.mapper = mapper;
             this.outputCacheStore = outputCacheStore;
             this.almacenadorArchivos = almacenadorArchivos;
+            this.servicioUsuarios = servicioUsuarios;
         }
 
 
-        [HttpGet("landingPage")]
+        [HttpGet("landing")]
         [OutputCache(Tags = [cacheTag])]
+        [AllowAnonymous]
         public async Task<ActionResult<LandingPageDTO>> Get()
         {
             var top = 6;
@@ -60,7 +66,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("{id:int}", Name = "ObtenerPeliculaPorId")]
-        [OutputCache(Tags = [cacheTag])]
+        [AllowAnonymous]
         public async Task<ActionResult<PeliculaDetallesDTO>> Get(int id)
         {
             var pelicula = await context.Peliculas
@@ -71,6 +77,28 @@ namespace PeliculasAPI.Controllers
             {
                 return NotFound();
             }
+
+            var promedioVoto = 0.0;
+            var usuarioVoto = 0;
+
+            if(await context.RatingPeliculas.AnyAsync(r=>r.PeliculaId == id)){
+                promedioVoto = await context.RatingPeliculas.Where(r => r.PeliculaId == id).AverageAsync(r => r.Puntuacion);
+
+                if (HttpContext.User.Identity!.IsAuthenticated)
+                {
+                    var usuarioId = await servicioUsuarios.ObtenerUsuarioId();
+                    var ratingDB = await context.RatingPeliculas
+                        .FirstOrDefaultAsync(r => r.UsuarioId == usuarioId && r.PeliculaId == id);
+
+                    if(ratingDB is not null)
+                    {
+                        usuarioVoto = ratingDB.Puntuacion;
+                    }
+                }
+            }
+
+            pelicula.PromedioVoto = promedioVoto;
+            pelicula.VotoUsuario = usuarioVoto;
 
             return pelicula;
         }
