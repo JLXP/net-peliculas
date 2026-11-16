@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using PeliculasAPI.Entidades;
@@ -6,6 +8,7 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/GenerosCopy")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "esadmin")]
     public class GeneroControllerCopy: ControllerBase
     {
 

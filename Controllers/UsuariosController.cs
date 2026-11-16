@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PeliculasAPI.DTOs;
@@ -10,6 +12,7 @@ namespace PeliculasAPI.Controllers
 {
     [Route("api/usuarios")]
     [ApiController]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "esadmin")]
     public class UsuariosController: ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -25,6 +28,7 @@ namespace PeliculasAPI.Controllers
 
 
         [HttpPost("registrar")]
+        [AllowAnonymous]
         public async Task<ActionResult<RespuestaAutenticacionDTO>> Registrar(CredencialesUsuarioDTO credencialesUsuarioDTO)
         {
             var usuario = new IdentityUser
@@ -47,7 +51,37 @@ namespace PeliculasAPI.Controllers
 
         }
 
+        [HttpPost("HacerAdmin")]
+        public async Task<IActionResult> HacerAdmin(EditarClaimDTO editarClaimDTO)
+        {
+            var usuario = await userManager.FindByEmailAsync(editarClaimDTO.Email);
+
+            if(usuario is null)
+            {
+                return NotFound();
+            }
+
+            await userManager.AddClaimAsync(usuario, new Claim("esadmin", "true"));
+            return NoContent();
+        }
+
+
+        [HttpPost("RemoveAdmin")]
+        public async Task<IActionResult> RemoverAdmin(EditarClaimDTO editarClaimDTO)
+        {
+            var usuario = await userManager.FindByEmailAsync(editarClaimDTO.Email);
+
+            if (usuario is null)
+            {
+                return NotFound();
+            }
+
+            await userManager.RemoveClaimAsync(usuario, new Claim("esadmin", "true"));
+            return NoContent();
+        }
+
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<RespuestaAutenticacionDTO>> Login(CredencialesUsuarioDTO credencialesUsuarioDTO)
         {
             var usuario = await userManager.FindByEmailAsync(credencialesUsuarioDTO.Email);
