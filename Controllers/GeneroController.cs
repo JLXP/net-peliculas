@@ -31,7 +31,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet] // api/generos
-        [OutputCache(Tags = [cacheTag])]
+        [OutputCache(Tags = [cacheTag], PolicyName = nameof(PoliticaCacheSinAutenticacion))]
         public async Task<List<GeneroDTO>> Get([FromQuery] PaginacionDTO paginacion)       
         {
             return await Get<Genero, GeneroDTO>(paginacion, ordenarPor: g => g.Nombre);

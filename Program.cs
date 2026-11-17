@@ -65,6 +65,7 @@ builder.Services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.Crea
 builder.Services.AddOutputCache(opciones =>
 {
     opciones.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(15);
+    opciones.AddPolicy(nameof(PoliticaCacheSinAutenticacion), PoliticaCacheSinAutenticacion.Instance);
 });
 
 var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermitidos")!.Split(",");
